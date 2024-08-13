@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPT Integration</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #121212;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .nav {
+            width: 100%;
+            background: #1f1f1f;
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+        }
+        .nav-left p {
+            margin: 0;
+        }
+        .nav-right ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            gap: 20px;
+        }
+        .nav-right ul li {
+            display: inline;
+        }
+        .nav-right ul li a {
+            text-decoration: none;
+            color: #efe8e8;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+        .nav-right ul li a:hover,
+        .nav-right ul li a.active {
+            color: #03a9f4;
+        }
+        h1 {
+            margin-top: 100px;
+            font-size: 36px;
+            color: #03a9f4;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        form {
+            margin-top: 20px;
+            width: 80%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 2px solid #03a9f4;
+            background: #2e2e2e;
+            color: #fff;
+            resize: none;
+            font-size: 16px;
+        }
+        input[type="submit"] {
+            margin-top: 10px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background: #03a9f4;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        input[type="submit"]:hover {
+            background: #0288d1;
+        }
+        h2 {
+            margin-top: 40px;
+            font-size: 24px;
+            color: #03a9f4;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        p {
+            font-size: 18px;
+            background: #1f1f1f;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-left">
+            <p>Hello, {{ user_name }}</p>
+        </div>
+        <div class="nav-right nav-menu">
+            <ul>
+                <li><a href="{{ url_for('dashboard') }}" class="link active">Home</a></li>
+                <li><a href="{{ url_for('gpt') }}" class="link">Ask AI</a></li>
+                <li><a href="{{ url_for('chat') }}" class="chatbutton"><i class="fa-solid fa-comment-dollar"></i> Chat</a></li>
+                <li><a href="{{ url_for('about') }}" class="link">About</a></li>
+                <li><a href="{{ url_for('logout') }}" class="link">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+    <h1>Your Personal Financial Assistant</h1>
+    <form method="POST">
+        <textarea name="prompt" rows="4" cols="50" placeholder="Enter your prompt here..."></textarea><br>
+        <input type="submit" value="Submit">
+    </form>
+    {% if suggestions %}
+        <h2>Response:</h2>
+        <p id="suggestions">{{ suggestions }}</p>
+    {% endif %}
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const suggestions = document.getElementById('suggestions');
+            if (suggestions) {
+                const msg = new SpeechSynthesisUtterance(suggestions.textContent);
+                window.speechSynthesis.speak(msg);
+            }
+        });
+    </script>
+</body>
+</html>

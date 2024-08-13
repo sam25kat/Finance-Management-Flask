@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Borrow Money</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0; 
+            box-sizing: border-box;
+        }
+
+        /* Body styling */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        /* Navigation bar styling */
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            color: #fff;
+            padding: 1rem 2rem;
+        }
+
+        .nav-left, .nav-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-left p {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #e1dbdb;
+            margin: 10px;
+        }
+
+        .nav-menu ul {
+            list-style: none;
+            display: flex;
+        }
+
+        .nav-menu ul li {
+            margin-left: 2rem;
+        }
+
+        .nav-menu ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+
+        .nav-menu ul li a:hover {
+            color: #ddd;
+        }
+
+        /* Container styling */
+        .container {
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .container h1 {
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        form label {
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        form input {
+            margin-bottom: 1.5rem;
+            padding: 0.75rem;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        form button {
+            padding: 0.75rem;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        form button:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-left">
+            <p>Hello, {{ user_name }}</p>
+        </div>
+        <div class="nav-right nav-menu">
+            <ul>
+                <li><a href="{{ url_for('dashboard') }}" class="link active">Home</a></li>
+                <li><a href="{{ url_for('gpt') }}" class="link">Ask AI</a></li>
+                <li><a href="{{ url_for('chat') }}" class="chatbutton"><i class="fa-solid fa-comment-dollar"></i> Chat</a></li>
+                <li><a href="{{ url_for('about') }}" class="link">About</a></li>
+                <li><a href="{{ url_for('logout') }}" class="link">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <h1>Borrow Money</h1>
+        <form method="POST" action="{{ url_for('borrow') }}">
+            <label for="receiver_email">Lender's Email:</label>
+            <input type="email" id="receiver_email" name="receiver_email" required>
+            <label for="amount">Amount:</label>
+            <input type="number" step="0.01" id="amount" name="amount" required>
+            <button type="submit">Send Request</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Borrow Requests</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0; 
+            box-sizing: border-box;
+        }
+
+        /* Body styling */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        /* Navigation bar styling */
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            color: #fff;
+            padding: 1rem 2rem;
+        }
+
+        .nav-left, .nav-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-left p {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #e1dbdb;
+            margin: 10px;
+        }
+
+        .nav-menu ul {
+            list-style: none;
+            display: flex;
+        }
+
+        .nav-menu ul li {
+            margin-left: 2rem;
+        }
+
+        .nav-menu ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+
+        .nav-menu ul li a:hover {
+            color: #ddd;
+        }
+
+        /* Container styling */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        ul li {
+            padding: 1rem;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        ul li:last-child {
+            border-bottom: none;
+        }
+
+        form {
+            display: flex;
+        }
+
+        form button {
+            padding: 0.5rem 1rem;
+            margin-left: 0.5rem;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        form button:hover {
+            background-color: #555;
+        }
+
+        /* Add spacing between elements */
+        .content {
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-left">
+            <p>Hello, {{ user_name }}</p>
+        </div>
+        <div class="nav-right nav-menu">
+            <ul>
+                <li><a href="{{ url_for('dashboard') }}" class="link active">Home</a></li>
+                <li><a href="{{ url_for('gpt') }}" class="link">Ask AI</a></li>
+                <li><a href="{{ url_for('chat') }}" class="chatbutton"><i class="fa-solid fa-comment-dollar"></i> Chat</a></li>
+                <li><a href="{{ url_for('about') }}" class="link">About</a></li>
+                <li><a href="{{ url_for('logout') }}" class="link">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <h1>Borrow Requests</h1>
+        <ul>
+            {% for request in requests %}
+                <li>
+                    <div class="content">
+                        {{ request[1] }} {{ request[2] }} requests ₹{{ request[3] }} ({{ request[4] }})
+                    </div>
+                    <form method="POST" action="{{ url_for('requests_page') }}">
+                        <input type="hidden" name="request_id" value="{{ request[0] }}">
+                        <button type="submit" name="action" value="approve">Approve</button>
+                        <button type="submit" name="action" value="reject">Reject</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

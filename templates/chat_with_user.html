@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with {{ receiver_name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body styling */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        /* Navigation bar styling */
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            color: #fff;
+            padding: 1rem 2rem;
+        }
+
+        .nav-left, .nav-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-left p {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #e1dbdb;
+            margin: 10px;
+        }
+
+        .nav-menu ul {
+            list-style: none;
+            display: flex;
+        }
+
+        .nav-menu ul li {
+            margin-left: 2rem;
+        }
+
+        .nav-menu ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+
+        .nav-menu ul li a:hover {
+            color: #ddd;
+        }
+
+        /* Container styling */
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        /* Chat messages styling */
+        #chat-messages {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background: #f9f9f9;
+        }
+
+        .message {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .message.sent {
+            flex-direction: row-reverse;
+            text-align: right;
+        }
+
+        .message.sent .avatar {
+            margin-left: 10px;
+            margin-right: 0;
+        }
+
+        .message:last-child {
+            margin-bottom: 0;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #ccc;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .message-content {
+            background: #fff;
+            border-radius: 5px;
+            padding: 10px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            max-width: 80%;
+        }
+
+        .message.sent .message-content {
+            background: #e0f7fa;
+        }
+
+        .message-content p {
+            margin: 0;
+        }
+
+        .message-content strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        /* Typing indicator styling */
+        .typing-indicator {
+            display: none;
+            font-style: italic;
+            color: #888;
+            margin-bottom: 1rem;
+        }
+
+        /* Form styling */
+        form {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-right: 0.5rem;
+        }
+
+        input[type="submit"] {
+            padding: 0.75rem 1.5rem;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #555;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var chatMessages = document.getElementById("chat-messages");
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            var messageInput = document.querySelector('input[name="message"]');
+            var typingIndicator = document.getElementById("typing-indicator");
+
+            messageInput.addEventListener("input", function() {
+                if (messageInput.value.length > 0) {
+                    typingIndicator.style.display = "block";
+                } else {
+                    typingIndicator.style.display = "none";
+                }
+            });
+        });
+
+        function scrollToBottom() {
+            var chatMessages = document.getElementById("chat-messages");
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            var typingIndicator = document.getElementById("typing-indicator");
+            typingIndicator.style.display = "none";
+        }
+    </script>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-left">
+            <p>Hello, {{ user_name }}</p>
+        </div>
+        <div class="nav-right nav-menu">
+            <ul>
+                <li><a href="{{ url_for('dashboard') }}" class="link">Home</a></li>
+                <li><a href="{{ url_for('logout') }}" class="link">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <h1>Chat with {{ receiver_name }}</h1>
+        <div id="chat-messages">
+            {% for message in messages %}
+            <div class="message {% if message[2] == session['user_id'] %}sent{% endif %}">
+                <div class="avatar">{{ message[0][0].upper() }}</div>
+                <div class="message-content">
+                    <strong>{{ message[0] }}</strong>
+                    <p>{{ message[1] }}</p>
+                </div>
+            </div>
+            {% endfor %}
+            <div id="typing-indicator" class="typing-indicator">
+                {{ user_name }} is typing...
+            </div>
+        </div>
+        <form action="" method="post" onsubmit="scrollToBottom()">
+            <input type="text" name="message" placeholder="Type a message...">
+            <input type="submit" value="Send">
+        </form>
+    </div>
+    <li><a href="{{ url_for('chat') }}" class="chatbutton"><i class="fa-solid fa-comment-dollar"></i> Go back to chats</a></li>
+</body>
+</html>

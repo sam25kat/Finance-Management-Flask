@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Money</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body styling */ 
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background: linear-gradient(270deg, #000, #fff);
+    background-size: 400% 400%;
+    animation: waveAnimation 8s ease infinite;
+    color: #333;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+/* Keyframes for background wave animation */
+@keyframes waveAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Navigation bar styling */
+.nav {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    color: #fff;
+    padding: 1rem 2rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+.nav-left, .nav-right {
+    display: flex;
+    align-items: center;
+}
+
+.nav-logo p {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.nav-menu ul {
+    list-style: none;
+    display: flex;
+}
+
+.nav-menu ul li {
+    margin-left: 2rem;
+}
+
+.nav-menu ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.nav-menu ul li a:hover {
+    color: #ddd;
+}
+
+/* Container styling */
+.container {
+    width: 90%;
+    max-width: 700px;
+    padding: 3rem;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    transform: perspective(1px) translateZ(0);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), 0 6px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+    top: 60px; /* Adjusted for navigation bar spacing */
+}
+
+/* Form styling */
+.container h1 {
+    margin-bottom: 1rem;
+    font-size: 2.5rem;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+input[type="number"] {
+    padding: 0.5rem;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    margin-top: 1rem;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+button:hover {
+    background-color: #555;
+}
+
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-left">
+            <p style="font-size: 18px; font-weight: bold; color: #efe8e8; margin: 10px;">Hello, {{ user_name }}</p>
+        </div>
+        <div class="nav-right nav-menu">
+            <ul>
+                <li><a href="{{ url_for('dashboard') }}" class="link active">Home</a></li>
+                <li><a href="{{ url_for('gpt') }}" class="link">Ask AI</a></li>
+                <li><a href="{{ url_for('chat') }}" class="chatbutton"><i class="fa-solid fa-comment-dollar"></i> Chat</a></li>
+                <li><a href="{{ url_for('about') }}" class="link">About</a></li>
+                <li><a href="{{ url_for('logout') }}" class="link">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Add Money</h1>
+        <form action="{{ url_for('add_money') }}" method="post">
+            <label for="amount">Amount:</label>
+            <input type="number" id="amount" name="amount" required>
+            <button type="submit">Add Money</button>
+        </form>
+    </div>
+</body>
+</html>

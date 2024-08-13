@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settle Debt</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0; 
+            box-sizing: border-box;
+        }
+
+        /* Body styling */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        /* Navigation bar styling */
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            color: #fff;
+            padding: 1rem 2rem;
+        }
+
+        .nav-left, .nav-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-logo p {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .nav-menu ul {
+            list-style: none;
+            display: flex;
+        }
+
+        .nav-menu ul li {
+            margin-left: 2rem;
+        }
+
+        .nav-menu ul li a, .nav-menu ul li button {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: Arial, sans-serif;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-menu ul li a:hover, .nav-menu ul li button:hover {
+            color: #ddd;
+        }
+
+        /* Container styling */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        h1 {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .content-section {
+            flex: 1;
+            margin: 0 1rem;
+            min-width: 300px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 2rem;
+        }
+
+        ul li {
+            padding: 0.5rem;
+            border-bottom: 1px solid #ddd;
+        }
+
+        ul li:last-child {
+            border-bottom: none;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        form label {
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        form input, form select {
+            margin-bottom: 1.5rem;
+            padding: 0.75rem;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        form button {
+            padding: 0.75rem;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        form button:hover {
+            background-color: #555;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 1.5rem;
+            color: #333;
+            text-decoration: none;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-left">
+            <p style="font-size: 18px; font-weight: bold; color: #e1dbdb; margin: 10px;">Hello, {{ user_name }}</p>
+        </div>
+        <div class="nav-right nav-menu">
+            <ul>
+                <li><a href="{{ url_for('dashboard') }}" class="link active">Home</a></li>
+                <li><a href="{{ url_for('gpt') }}" class="link">Ask AI</a></li>
+                <li><a href="{{ url_for('chat') }}" class="chatbutton"><i class="fa-solid fa-comment-dollar"></i> Chat</a></li>
+                <li><a href="{{ url_for('about') }}" class="link">About</a></li>
+                <li><a href="{{ url_for('logout') }}" class="link">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <h1>Settle Debt</h1>
+        <div class="content-section">
+            <h2>Users You Owe</h2>
+            <ul>
+                {% if users_owed %}
+                    {% for user in users_owed %}
+                        <li>ID:{{user[0]}} Name:{{ user[1] }} {{ user[2] }}: ₹{{ user[3] }}</li>
+                    {% endfor %}
+                {% else %}
+                    <li>No users found.</li>
+                {% endif %}
+            </ul>
+        </div>
+
+        <div class="content-section">
+            <h2>Users Who Owe You</h2>
+            <ul>
+                {% if users_owes %}
+                    {% for user in users_owes %}
+                        <li>ID:{{user[0]}} Name:{{ user[1] }} {{ user[2] }}: ₹{{ user[3] }}</li>
+                    {% endfor %}
+                {% else %}
+                    <li>No users found.</li>
+                {% endif %}
+            </ul>
+        </div>
+
+        <div class="content-section">
+            <form action="{{ url_for('settle_debt') }}" method="post" onsubmit="return validateSettlement()">
+                <label for="user_id">User ID:</label>
+                <input type="number" name="user_id" id="user_id" required>
+                
+                <label for="amount">Amount:</label>
+                <input type="number" step="0.01" name="amount" id="amount" required min="0">
+
+                <label for="settle_type">Settle Type:</label>
+                <select name="settle_type" id="settle_type">
+                    <option value="owes">Owed to me</option>
+                    <option value="owed">I owe</option>
+                </select>
+
+                <button type="submit">Settle</button>
+            </form>
+
+            <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+        </div>
+    </div>
+
+    <script>
+        function validateSettlement() {
+            var amount = parseFloat(document.getElementById('amount').value);
+            if (isNaN(amount) || amount <= 0) {
+                alert("Please enter a valid positive amount.");
+                return false;
+            }
+            return true;
+        }
+    </script>
+</body>
+</html>

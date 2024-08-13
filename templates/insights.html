@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Insights</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body styling */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        /* Navigation bar styling */
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            color: #fff;
+            padding: 1rem 2rem;
+        }
+
+        .nav-left, .nav-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-logo p {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .nav-menu ul {
+            list-style: none;
+            display: flex;
+        }
+
+        .nav-menu ul li {
+            margin-left: 2rem;
+        }
+
+        .nav-menu ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+
+        .nav-menu ul li a:hover {
+            color: #ddd;
+        }
+
+        /* Container styling */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Form and content styling */
+        .container h1 {
+            margin-bottom: 1rem;
+            font-size: 2rem;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        select {
+            padding: 0.5rem;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            margin-top: 1rem;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 2rem;
+        }
+
+        .insights-details p {
+            font-size: 1.1rem;
+            margin: 0.5rem 0;
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-left">
+            <p style="font-size: 18px; font-weight: bold; color: #efe8e8; margin: 10px;">Hello, {{ user_name }}</p>
+        </div>
+        <div class="nav-right nav-menu">
+            <ul>
+                <li><a href="{{ url_for('dashboard') }}" class="link active">Home</a></li>
+                <li><a href="{{ url_for('gpt') }}" class="link">Ask AI</a></li>
+                <li><a href="{{ url_for('chat') }}" class="chatbutton"><i class="fa-solid fa-comment-dollar"></i> Chat</a></li>
+                <li><a href="{{ url_for('about') }}" class="link">About</a></li>
+                <li><a href="{{ url_for('logout') }}" class="link">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Overall Transaction Insights</h1>
+
+        <!-- <form method="get" action="{{ url_for('insights') }}">
+            <label for="period">Select Period:</label>
+            <select id="period" name="period">
+                <option value="all" {% if request.args.get('period') == 'all' %}selected{% endif %}>All</option>
+                <option value="today" {% if request.args.get('period') == 'today' %}selected{% endif %}>Today</option>
+                <option value="week" {% if request.args.get('period') == 'week' %}selected{% endif %}>This Week</option>
+                <option value="month" {% if request.args.get('period') == 'month' %}selected{% endif %}>This Month</option>
+            </select>
+            <button type="submit">View Insights</button>
+        </form> -->
+
+        {% if plot_url %}
+            <img src="data:image/png;base64,{{ plot_url }}" alt="Transaction Insights">
+        {% else %}
+            <p>No transactions found for the selected period.</p>
+        {% endif %}
+
+        <div class="insights-details">
+            {% for category, amount in text.items() %}
+                <p>{{ category }}: ${{ amount }}</p>
+            {% endfor %}
+        </div>
+    </div>
+    <li><a href="{{ url_for('transactions') }}" class="link">go back to Transactions</a></li>
+</body>
+</html>

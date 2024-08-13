@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            color: #fff;
+            padding: 1rem 2rem;
+        }
+
+        .nav-left, .nav-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-logo p {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .nav-menu ul {
+            list-style: none;
+            display: flex;
+        }
+
+        .nav-menu ul li {
+            margin-left: 2rem;
+        }
+
+        .nav-menu ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+
+        .nav-menu ul li a:hover {
+            color: #ddd;
+        }
+
+        .container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 1000px;
+            height: 600px;
+            background: #fff;
+            box-shadow: 0 30px 50px #dbdbdb;
+            padding: 2rem;
+            overflow: hidden;
+        }
+
+        .container .slide .item {
+            width: 200px;
+            height: 300px;
+            position: absolute;
+            top: 50%;
+            transform: translate(0, -50%);
+            border-radius: 20px;
+            box-shadow: 0 30px 50px #505050;
+            background-position: 50% 50%;
+            background-size: cover;
+            display: inline-block;
+            transition: 0.5s;
+        }
+
+        .slide .item:nth-child(1),
+        .slide .item:nth-child(2) {
+            top: 0;
+            left: 0;
+            transform: translate(0, 0);
+            border-radius: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .slide .item:nth-child(3) {
+            left: 50%;
+        }
+
+        .slide .item:nth-child(4) {
+            left: calc(50% + 220px);
+        }
+
+        .slide .item:nth-child(5) {
+            left: calc(50% + 440px);
+        }
+
+        .slide .item:nth-child(n + 6) {
+            left: calc(50% + 660px);
+            opacity: 0;
+        }
+
+        .item .content {
+            position: absolute;
+            top: 50%;
+            left: 100px;
+            width: 300px;
+            text-align: left;
+            color: #040000;
+            font-weight: bolder;
+            transform: translate(0, -50%);
+            font-family: system-ui;
+            display: none;
+        }
+
+        .slide .item:nth-child(2) .content {
+            display: block;
+        }
+
+        .content .name {
+            font-size: 40px;
+            text-transform: uppercase;
+            opacity: 0;
+            animation: animate 1s ease-in-out 1 forwards;
+        }
+
+        .content .des {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            opacity: 0;
+            font-weight: bold;
+            animation: animate 1s ease-in-out 0.3s 1 forwards;
+        }
+
+        .content button {
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            opacity: 0;
+            animation: animate 1s ease-in-out 0.6s 1 forwards;
+            background-color: #333;
+            color: #fff;
+            border-radius: 5px;
+        }
+
+        .content button:hover {
+            background-color: #555;
+        }
+
+        @keyframes animate {
+            from {
+                opacity: 0;
+                transform: translate(0, 100px);
+                filter: blur(33px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translate(0);
+                filter: blur(0);
+            }
+        }
+
+        .button {
+            width: 100%;
+            text-align: center;
+            position: absolute;
+            bottom: 20px;
+        }
+
+        .button button {
+            width: 40px;
+            height: 35px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            margin: 0 5px;
+            border: 1px solid #000;
+            transition: 0.3s;
+        }
+
+        .button button:hover {
+            background: #ababab;
+            color: #fff;
+        }
+
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-left">
+            <p style="font-size: 18px; font-weight: bold; color: #efe8e8; margin: 10px;">Hello, {{ user_name }}</p>
+        </div>
+        <div class="nav-right nav-menu">
+            <ul>
+                <li><a href="{{ url_for('dashboard') }}" class="link active">Home</a></li>
+                <li><a href="{{ url_for('gpt') }}" class="link">Ask AI</a></li>
+                <li><a href="{{ url_for('chat') }}" class="chatbutton"><i class="fa-solid fa-comment-dollar"></i> Chat</a></li>
+                <li><a href="{{ url_for('about') }}" class="link">About</a></li>
+                <li><a href="{{ url_for('logout') }}" class="link">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="slide">
+            <div class="item" style="background-image: url(static/about.jpg);">
+                <div class="content">
+                    <div class="name" style="color: rgb(189, 185, 185);">Understanding Finance</div>
+                    <div class="des" style="color: rgb(188, 186, 186);">Finance is the management of money and includes activities such as investing, borrowing, lending, budgeting, saving, and forecasting.
+                        Effective financial management helps individuals and businesses achieve their financial goals and secure their financial future.</div>
+                    <button>See More</button>
+                </div>
+            </div>
+            <div class="item" style="background-image: url(static/about1.jpg);">
+                <div class="content">
+                    <div class="name">Why Financial Management is Crucial</div>
+                    <div class="des">Helps in efficient allocation of resources.
+                        Ensures financial stability and security.
+                        Enables goal setting and achievement.
+                        Promotes disciplined spending and saving habits.</div>
+                    <button>See More</button>
+                </div>
+            </div>
+            <div class="item" style="background-image: url(static/about2.jpg);">
+                <div class="content">
+                    <div class="name" style="color: rgb(189, 185, 185);">Why Choose Our App?</div>
+                    <div class="des" style="color: rgb(189, 185, 185);">Our app simplifies financial management by providing intuitive tools to track income, expenses, and investments.
+                        Offers real-time insights and analytics to help users make informed financial decisions. Secure and user-friendly interface designed for both beginners and experienced users.</div>
+                    <button>See More</button>
+                </div>
+            </div>
+            <div class="item" style="background-image: url(static/about3.jpg);">
+                <div class="content">
+                    <div class="name">About Our Project</div>
+                    <div class="des">Frontend: Utilizes modern web technologies to ensure a seamless user experience.
+                        Backend: Flask framework for efficient handling of requests and data processing.
+                        Database: AWS RDS ensures reliability and security of user data.
+                        Security: Implements encryption and multi-factor authentication to protect user information.</div>
+                    <button>See More</button>
+                </div>
+            </div>
+            <div class="item" style="background-image: url(static/about4.jpg);">
+                <div class="content">
+                    <div class="name" >Key Features of Our App</div>
+                    <div class="des">Expense Tracking: Log and categorize expenses to monitor spending. Financial Reports: Generate detailed financial reports and visualizations.
+                        Security: Advanced security features including encryption and Hashing to protect data.</div>
+                    <button>See More</button>
+                </div>
+            </div>
+            <div class="item" style="background-image: url(static/about5.jpg);">
+                <div class="content">
+                    <div class="name" style="color: rgb(189, 185, 185);">About the Developers</div>
+                    <div class="des"style="color: rgb(189, 185, 185);">Sriram, Chhavi, Sameer, Sai Shravan: We are a team of four dedicated Computer Science engineers and developers.
+                        Background: Each of us has a strong background in software development, web technologies, and database management.
+                        Collaboration: Our combined expertise and teamwork have enabled us to develop this comprehensive financial management app.
+                        Passion: We are passionate about leveraging technology to solve real-world problems and improve financial literacy and management.</div>
+                    <button>See More</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="button">
+            <button class="prev"><i class="fa-solid fa-arrow-left"></i></button>
+            <button class="next"><i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+    </div>
+
+    <script>
+        let next = document.querySelector('.next');
+        let prev = document.querySelector('.prev');
+
+        next.addEventListener('click', function() {
+            let items = document.querySelectorAll('.item');
+            document.querySelector('.slide').appendChild(items[0]);
+        });
+
+        prev.addEventListener('click', function() {
+            let items = document.querySelectorAll('.item');
+            document.querySelector('.slide').prepend(items[items.length - 1]); // here the length of items = 6
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Split Bill</title>
+</head>
+<body>
+    <h1>Split Bill</h1>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul class="flashes">
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <form action="{{ url_for('split_bill') }}" method="post">
+        <label for="bill_amount">Bill Amount:</label>
+        <input type="text" id="bill_amount" name="bill_amount" required><br>
+
+        <label for="email1">Email 1 (Receiver):</label>
+        <input type="email" id="email1" name="email1" required><br>
+
+        <label for="email2">Email 2:</label>
+        <input type="email" id="email2" name="email2"><br>
+
+        <label for="email3">Email 3:</label>
+        <input type="email" id="email3" name="email3"><br>
+
+        <label for="email4">Email 4:</label>
+        <input type="email" id="email4" name="email4"><br>
+
+        <label for="email5">Email 5:</label>
+        <input type="email" id="email5" name="email5"><br>
+
+        <label for="email6">Email 6:</label>
+        <input type="email" id="email6" name="email6"><br>
+
+        <label for="email7">Email 7:</label>
+        <input type="email" id="email7" name="email7"><br>
+
+        <label for="email8">Email 8:</label>
+        <input type="email" id="email8" name="email8"><br>
+
+        <button type="submit">Split Bill</button>
+    </form>
+</body>
+</html> -->
